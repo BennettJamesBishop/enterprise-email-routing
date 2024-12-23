@@ -470,25 +470,23 @@ category_topics = {
     "Facilities Management": facilities_topics,
 }
 
-def generate_request_data(num_samples=100):
-    data = []
-    for _ in range(num_samples):
-        category = fake.random_element(list(categories.keys()))
-        templates = fake.random_element(categories[category])
-        topic = fake.random_element(category_topics[category])  # Use category-specific topics
-        request_text = templates["request"].format(topic=topic)
 
-        request = {
-            "request": request_text,
-            "label": category,
-        }
-        data.append(request)
-    return data
+# Initialize an empty list to store the data
+data = []
 
-# Generate dataset
-dataset = generate_request_data(num_samples=__)
+# Generate the dataset using a for loop
+for category, templates in categories.items():
+    topics = category_topics[category]  # Get the topics for the current category
+    for template in templates:
+        for topic in topics:
+            # Format the request with the current topic
+            request_text = template["request"].format(topic=topic)
+            
+            # Append the request and category (label) to the data list
+            data.append({"request": request_text, "label": category})
 
-# Save to CSV
-df = pd.DataFrame(dataset)
-df.to_csv("internal_request_dataset.csv", index=False)
-print("Dataset created and saved as 'internal_request_dataset.csv'")
+# Convert the list of dictionaries into a DataFrame
+df = pd.DataFrame(data)
+
+# Save the dataset to a CSV file
+df.to_csv("full_dataset.csv", index=False)
