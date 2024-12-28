@@ -70,9 +70,6 @@ categories = {
             "request": "Could you review and approve the {topic} for this month? Let me know if there’s anything I need to address."
         },
         {
-            "request": "I need help with {topic}. Please let me know the steps to resolve this issue."
-        },
-        {
             "request": "This is a time-sensitive matter related to {topic}. Please prioritize this and let me know if you require additional information."
         },
         {
@@ -158,17 +155,11 @@ categories = {
         {
             "request": "I’m currently facing a challenge with {topic}. Please share the best way to resolve this."
         },
-            {
-        "request": "I need access to {topic} to complete my tasks. Could you guide me on how to proceed and what steps are required?"
-    },
     {
         "request": "I’m experiencing an issue with {topic}. Can you assist in diagnosing and resolving the problem as soon as possible?"
     },
     {
         "request": "I require assistance with {topic}. Could you provide detailed steps or resources to address this effectively?"
-    },
-    {
-        "request": "I’m unable to access {topic}. Could you troubleshoot this and let me know once the issue is resolved?"
     },
     {
         "request": "Could you update me on the current status of my access request for {topic}? Let me know if you need any additional details."
@@ -207,13 +198,7 @@ categories = {
         "request": "Need access to {topic}."
     },
     {
-        "request": "Fix {topic} problem."
-    },
-    {
         "request": "What’s going on with {topic}? Update me."
-    },
-    {
-        "request": "{topic} access?"
     },
     ],
     "Marketing": [
@@ -283,9 +268,6 @@ categories = {
     {
         "request": "Help with {topic} plan."
     },
-    {
-        "request": "Status on {topic} results?"
-    }
     ],
     # Facilities Management Templates
 "Facilities Management": [
@@ -483,7 +465,8 @@ for category, templates in categories.items():
             request_text = template["request"].format(topic=topic)
             
             # Append the request and category (label) to the data list
-            data.append({"request": request_text, "label": category})
+            # Append topic for the sake of stratified train/test splitting
+            data.append({"request": request_text, "label": category, "topic": topic})
 
 # Convert the list of dictionaries into a DataFrame
 df = pd.DataFrame(data)
