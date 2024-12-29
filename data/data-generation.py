@@ -464,12 +464,16 @@ for category, templates in categories.items():
             # Format the request with the current topic
             request_text = template["request"].format(topic=topic)
             
-            # Append the request and category (label) to the data list
+            # Append the request and category to the data list
             # Append topic for the sake of stratified train/test splitting
-            data.append({"request": request_text, "label": category, "topic": topic})
+            data.append({"request": request_text, "category": category, "topic": topic})
 
 # Convert the list of dictionaries into a DataFrame
 df = pd.DataFrame(data)
+# Create new column to stratify by when splitting into Train/Validation/Test Sets
+df['stratify_col'] = df['category'] + "__" + df['topic']
+# Drop unneccesary topic column
+df = df.drop(columns=["topic"])
 
 # Save the dataset to a CSV file
-df.to_csv("full_dataset.csv", index=False)
+df.to_csv("data/full_dataset.csv", index=False)
